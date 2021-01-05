@@ -27,14 +27,14 @@ int time;	/*time is a acceleration measurement var*/
  */
 void stop_measure_speed_CB(void){
 	time = nmea_data.UTC_time - time;
-	NMEA_speed_CB_unregister();
+	NMEA_CB_unregister(SPEED_RISE_BARRIER_CB);
 }
 /*
 * start_measure_speed_CB() is a callback function that starts measurement and register stop_measure_speed_CB() CB function
 */
 void start_measure_speed_CB(void){
 	time = nmea_data.UTC_time;
-	NMEA_speed_CB_register(&stop_measure_speed_CB, 50);
+	NMEA_CB_register(&stop_measure_speed_CB, SPEED_RISE_BARRIER_CB, 60);
 }
 /* USER CODE END 0 */
 ...
@@ -44,7 +44,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   NMEA_init(&huart4);	/*library initialization. Pass the UART handler structure*/
-  NMEA_speed_CB_register(&start_measure_speed_CB,1);	/*CB function registration*/
+  NMEA_CB_register(&start_measure_speed_CB, SPEED_RISE_BARRIER_CB, 10);	/*CB function registration*/
 
   /* USER CODE END 2 */
 

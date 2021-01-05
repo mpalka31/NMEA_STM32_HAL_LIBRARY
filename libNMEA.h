@@ -32,11 +32,12 @@ UART_HandleTypeDef *NMEA_huart;
  *
  * More specific codes in the future.
  */
- typedef enum {
+typedef enum {
 	NMEA_OK=0,
 	NMEA_BUFFER_OVERFLOWED,
 	NMEA_CHECKSUM_ERROR,
 	NMEA_WRONG_DATA,
+	NMEA_WRONG_CB_ID,
 	NMEA_ERROR
 
 }NMEA_status;
@@ -68,6 +69,15 @@ typedef struct{
 
 }NMEA_data;
 /*
+ * May be?
+ */
+typedef enum {
+	SPEED_CHANGE_CB=0,
+	SPEED_RISE_BARRIER_CB,
+	SPEED_FALL_BARRIER_CB
+}NMEA_CB_ID;
+
+/*
  * NMEA_data instantion declaration.
  */
 NMEA_data nmea_data;
@@ -81,13 +91,8 @@ void NMEA_init(UART_HandleTypeDef *huart);
  */
 NMEA_status NMEA_UART_get_char(void);
 NMEA_status NMEA_process_task(void);
-NMEA_status NMEA_speed_CB_register(void (*speed_CB)(void),float speed_bar);
-void NMEA_speed_CB_unregister(void);
-
-
-
-
-
+NMEA_status NMEA_CB_register(void (*CB_fun)(void),NMEA_CB_ID CB_id,float barier);
+NMEA_status NMEA_CB_unregister(NMEA_CB_ID CB_id);
 
 
 

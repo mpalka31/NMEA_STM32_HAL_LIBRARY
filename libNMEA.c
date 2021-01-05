@@ -15,24 +15,63 @@ static uint8_t UART_buffer_head=0;
 static uint8_t UART_buffer_tail=0;
 static uint8_t UART_buffer_lines=0;
 
-static void (*speed_CB_fun_ptr)(void);
-static float speed_barrier;
-static void speed_default_CB(void){}
-NMEA_status NMEA_speed_CB_register(void (*speed_CB)(void),float speed_bar){
-	if (speed_bar < 0) return NMEA_WRONG_DATA;
-	speed_CB_fun_ptr = speed_CB;
-	speed_barrier = speed_bar;
-	return NMEA_OK;
+static void (*speed_change_CB_fun_ptr)(void);
+static float  speed_change_tolerance;
+
+static void (*speed_raise_barrier_CB_fun_ptr)(void);
+static float speed_raise_barrier;
+
+static void (*speed_fall_barrier_CB_fun_ptr)(void);
+static float speed_fall_barrier;
+
+static void default_CB(void){}
+
+NMEA_status NMEA_CB_register(void (*CB_fun)(void),NMEA_CB_ID CB_id,float barrier){
+	switch (CB_id) {
+		case SPEED_CHANGE_CB:
+			if (barrier < 0) return NMEA_WRONG_DATA;
+			speed_change_CB_fun_ptr = CB_fun;
+			speed_change_tolerance = barrier;
+			return NMEA_OK;
+		case SPEED_RISE_BARRIER_CB:
+			if (barrier < 0) return NMEA_WRONG_DATA;
+			speed_raise_barrier_CB_fun_ptr = CB_fun;
+			speed_raise_barrier = barrier;
+			return NMEA_OK;
+		case SPEED_FALL_BARRIER_CB:
+			if (barrier < 0) return NMEA_WRONG_DATA;
+			speed_fall_barrier_CB_fun_ptr = CB_fun;
+			speed_fall_barrier = barrier;
+			return NMEA_OK;
+		default:
+			return NMEA_WRONG_CB_ID;
+	}
+	return NMEA_ERROR;
 }
 
-void NMEA_speed_CB_unregister(void){
-	speed_barrier = 0;
-	speed_CB_fun_ptr = &speed_default_CB;
+NMEA_status NMEA_CB_unregister(NMEA_CB_ID CB_id){
+	switch (CB_id) {
+		case SPEED_CHANGE_CB:
+			speed_change_tolerance = 0;
+			speed_change_CB_fun_ptr = default_CB;
+			return NMEA_OK;
+		case SPEED_RISE_BARRIER_CB:
+			speed_raise_barrier = 0;
+			speed_raise_barrier_CB_fun_ptr = default_CB;
+			return NMEA_OK;
+		case SPEED_FALL_BARRIER_CB:
+			speed_fall_barrier = 0;
+			speed_fall_barrier_CB_fun_ptr = default_CB;
+			return NMEA_OK;
+		default:
+			return NMEA_WRONG_CB_ID;
+	}
+	return NMEA_ERROR;
 }
 
 static void 	NMEA_parser(char *message){
 
-//	NMEA_data previous_data = nmea_data;
+	NMEA_data previous_data = nmea_data;
 
 	int num = 0;
 	char *fields[32]={NULL};
@@ -93,8 +132,16 @@ static void 	NMEA_parser(char *message){
 		nmea_data.sat_in_view = atoi(fields[3]);
 	}
 
-	if (nmea_data.speed_kmph > speed_barrier){
-		speed_CB_fun_ptr();
+	if (abs(nmea_data.speed_kmph - previous_data.speed_kmph) > speed_change_tolerance){
+		speed_change_CB_fun_ptr();
+	}
+
+	if (nmea_data.speed_kmph > speed_raise_barrier && previous_data.speed_kmph <= speed_raise_barrier){
+		speed_raise_barrier_CB_fun_ptr();
+	}
+
+	if (nmea_data.speed_kmph < speed_raise_barrier && previous_data.speed_kmph >= speed_raise_barrier){
+		speed_fall_barrier_CB_fun_ptr();
 	}
 }
 
@@ -151,7 +198,10 @@ static void NMEA_read_line(void){
 void NMEA_init(UART_HandleTypeDef *huart){
 	NMEA_huart=huart;
 	HAL_UART_Receive_IT(NMEA_huart, &UART_char_tmp, 1);
-	speed_CB_fun_ptr = &speed_default_CB;
+
+	speed_change_CB_fun_ptr = &default_CB;
+	speed_raise_barrier_CB_fun_ptr = &default_CB;
+	speed_fall_barrier_CB_fun_ptr = &default_CB;
 }
 
 /*
@@ -196,7 +246,6 @@ NMEA_status NMEA_process_task(void){
 	}
 	return stat;
 }
-
 
 
 
