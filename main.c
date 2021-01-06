@@ -11,15 +11,12 @@
 ...
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "libNMEA.h"
+#include "main.h"
 /* USER CODE END Includes */
 ...
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-	if(huart == NMEA_huart) NMEA_UART_get_char();	/*add NMEA_UART_get_char() to IT routine*/
-}
+
 
 int time;	/*time is a acceleration measurement var*/
 /*
@@ -43,7 +40,7 @@ int main(void)
   ...
   /* USER CODE BEGIN 2 */
 
-  NMEA_init(&huart4);	/*library initialization. Pass the UART handler structure*/
+  NMEA_init(&huart4, &hdma_uart4_rx);	/*library initialization. Pass the UART handler structure*/
   NMEA_CB_register(&start_measure_speed_CB, SPEED_RISE_BARRIER_CB, 10);	/*CB function registration*/
 
   /* USER CODE END 2 */

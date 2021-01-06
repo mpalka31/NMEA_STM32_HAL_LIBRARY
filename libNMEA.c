@@ -7,9 +7,8 @@
 
 
 #include "libNMEA.h"
-
+static uint8_t NMEA__UART_DMA_buffer[NMEA_UART_DMA_BUFFER_SIZE]={0};
 static uint8_t NMEA__UART_buffer[NMEA_UART_BUFFER_SIZE]={0};
-static uint8_t UART_char_tmp;
 static uint8_t NMEA__working_buffer[NMEA_WORKING_BUFFER_SIZE]={0};
 static uint8_t UART_buffer_head=0;
 static uint8_t UART_buffer_tail=0;
@@ -158,8 +157,10 @@ static uint8_t hx2int(uint8_t n2, uint8_t n1){
 static NMEA_status NMEA_checksum_clc(uint8_t * message){
 	uint8_t index = 1;
 	uint8_t checksum_clc =0;
-	while (message[index]!='*'){
+	int iter = 0;
+	while (message[index]!='*' && iter<200){
 		checksum_clc^=message[index++];
+		iter ++;
 	}
 
 	uint8_t checksum = hx2int(message[index+1],message[index+2]);
@@ -195,9 +196,13 @@ static void NMEA_read_line(void){
 /*
  * Library initialization
  */
-void NMEA_init(UART_HandleTypeDef *huart){
+void NMEA_init(UART_HandleTypeDef *huart, DMA_HandleTypeDef *DMA){
 	NMEA_huart=huart;
-	HAL_UART_Receive_IT(NMEA_huart, &UART_char_tmp, 1);
+	NMEA_DMA=DMA;
+	__HAL_UART_ENABLE_IT(NMEA_huart,UART_IT_IDLE);
+	HAL_UART_Receive_DMA(NMEA_huart, NMEA__UART_DMA_buffer, NMEA_UART_DMA_BUFFER_SIZE);
+
+	//HAL_UART_Receive_IT(NMEA_huart, &UART_char_tmp, 1);
 
 	speed_change_CB_fun_ptr = &default_CB;
 	speed_raise_barrier_CB_fun_ptr = &default_CB;
@@ -205,14 +210,14 @@ void NMEA_init(UART_HandleTypeDef *huart){
 }
 
 /*
- * add char to buffer
+ * add char to circular buffer
  */
-NMEA_status NMEA_UART_get_char(void){
+static NMEA_status NMEA_UART_DMA_get_char(uint8_t DMA_char){
 	uint8_t position = (UART_buffer_head + 1)%NMEA_UART_BUFFER_SIZE;
 	NMEA_status stat=NMEA_OK;
 
 	if (position == UART_buffer_tail){		//buffer overflowed! make space for new message
-		while (NMEA__UART_buffer[UART_buffer_tail]!='\n'){//&&NMEA__UART_buffer[UART_buffer_tail]!=0){
+		while (NMEA__UART_buffer[UART_buffer_tail]!='\n'){
 			NMEA__UART_buffer[UART_buffer_tail]=0;
 			UART_buffer_tail=(UART_buffer_tail + 1)%NMEA_UART_BUFFER_SIZE;
 		}
@@ -221,17 +226,36 @@ NMEA_status NMEA_UART_get_char(void){
 		stat=NMEA_BUFFER_OVERFLOWED;
 	}
 
-	NMEA__UART_buffer[UART_buffer_head]=UART_char_tmp;
+	NMEA__UART_buffer[UART_buffer_head]=DMA_char;
 
 	UART_buffer_head=position;
 
-	if(UART_char_tmp=='\n'){
+	if(DMA_char=='\n'){
 		++UART_buffer_lines;	//increment lines counter
 	}
 
-	HAL_UART_Receive_IT(NMEA_huart, &UART_char_tmp, 1);
 	return stat;
 }
+
+/*
+ * this function copies messages from DMA buffer to ...
+ */
+NMEA_status NMEA_UART_DMA_copy_buffer(void){
+	uint8_t data_length = NMEA_UART_DMA_BUFFER_SIZE - __HAL_DMA_GET_COUNTER(NMEA_DMA);
+
+	NMEA_status stat=NMEA_OK;
+
+	for (int i = 0; i < data_length; i++){
+		if (NMEA_UART_DMA_get_char(NMEA__UART_DMA_buffer[i])==NMEA_BUFFER_OVERFLOWED){
+			stat=NMEA_BUFFER_OVERFLOWED;
+		}
+		NMEA__UART_DMA_buffer[i]=0;
+	}
+
+	HAL_UART_Receive_DMA(NMEA_huart, NMEA__UART_DMA_buffer, NMEA_UART_DMA_BUFFER_SIZE);
+	return stat;
+}
+
 /*
  * NMEA_process_task is the function that process all data.
  * You have to place in inside your main loop!
@@ -240,14 +264,38 @@ NMEA_status NMEA_process_task(void){
 	NMEA_status stat = NMEA_OK;
 	while(UART_buffer_lines>0) {
 		NMEA_read_line();
-		NMEA_checksum_clc(NMEA__working_buffer);
-		NMEA_parser((char *)NMEA__working_buffer);
-
+		stat = NMEA_checksum_clc(NMEA__working_buffer);
+		if (stat == NMEA_OK){
+			NMEA_parser((char *)NMEA__working_buffer);
+		}
 	}
 	return stat;
 }
 
-
+/*
+ * user_IDLE_IT_handler is a function that detects UART idle IT and handle it.
+ * It should be used in void "UARTX_IRQHandler(void)" from "stm32lXxx_it.c" file like this:
+ *
+ * 	void UART4_IRQHandler(void)
+ * 	{
+ *		USER CODE BEGIN UART4_IRQn 0
+ *
+ *		user_UART_IDLE_IT_handler();
+ *
+ *  	USER CODE END UART4_IRQn 0
+ *
+ *  	...
+ *
+ */
+NMEA_status user_UART_IDLE_IT_handler(void){
+	NMEA_status stat = NMEA_OK;
+	if (__HAL_UART_GET_FLAG(NMEA_huart, UART_FLAG_IDLE) == SET) {
+		__HAL_UART_CLEAR_FLAG(NMEA_huart,UART_FLAG_IDLE);
+		HAL_UART_DMAStop(NMEA_huart);
+		stat = NMEA_UART_DMA_copy_buffer();
+	}
+	return stat;
+}
 
 
 
