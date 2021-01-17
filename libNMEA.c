@@ -7,12 +7,12 @@
 
 
 #include "libNMEA.h"
-static uint8_t NMEA__UART_DMA_buffer[NMEA_UART_DMA_BUFFER_SIZE]={0};
-static uint8_t NMEA__UART_buffer[NMEA_UART_BUFFER_SIZE]={0};
-static uint8_t NMEA__working_buffer[NMEA_WORKING_BUFFER_SIZE]={0};
-static uint8_t UART_buffer_head=0;
-static uint8_t UART_buffer_tail=0;
-static uint8_t UART_buffer_lines=0;
+static uint8_t NMEA_UART_DMA_buffer[NMEA_UART_DMA_BUFFER_SIZE]={0};
+static uint8_t NMEA_UART_buffer[NMEA_UART_BUFFER_SIZE]={0};
+static uint8_t NMEA_working_buffer[NMEA_WORKING_BUFFER_SIZE]={0};
+static int UART_buffer_head=0;
+static int UART_buffer_tail=0;
+static int UART_buffer_lines=0;
 
 static void (*speed_change_CB_fun_ptr)(void);
 static float  speed_change_tolerance;
@@ -172,20 +172,21 @@ static NMEA_status NMEA_checksum_clc(uint8_t * message){
 }
 
 /*
- * NMEA_read_line is function that reads one NMEA message line to NMEA__working_buffer.
+ * NMEA_read_line is function that reads one NMEA message line to NMEA_working_buffer.
  */
 static void NMEA_read_line(void){
-	uint8_t index = 0;
-	while (index < NMEA_WORKING_BUFFER_SIZE) NMEA__working_buffer[index++]=0;	// Clean up working buffer.
+	int index = 0;
+	while (index < NMEA_WORKING_BUFFER_SIZE) NMEA_working_buffer[index++]=0;	// Clean up working buffer.
 
 	index = 0;
-	while(NMEA__UART_buffer[UART_buffer_tail]!= '\n' && index < NMEA_WORKING_BUFFER_SIZE-2){
-		NMEA__working_buffer[index]=NMEA__UART_buffer[UART_buffer_tail];
-		NMEA__UART_buffer[UART_buffer_tail] = 0;
+	while(NMEA_UART_buffer[UART_buffer_tail]!= '\n' && index < NMEA_WORKING_BUFFER_SIZE-2){
+		NMEA_working_buffer[index]=NMEA_UART_buffer[UART_buffer_tail];
+		NMEA_UART_buffer[UART_buffer_tail] = 0;
 		UART_buffer_tail = (UART_buffer_tail + 1)%NMEA_UART_BUFFER_SIZE;
 		++index;
 	}
-	NMEA__working_buffer[index]=NMEA__UART_buffer[UART_buffer_tail];
+	NMEA_working_buffer[index]=NMEA_UART_buffer[UART_buffer_tail];
+	NMEA_UART_buffer[UART_buffer_tail] = 0;
 	UART_buffer_tail = (UART_buffer_tail + 1)%NMEA_UART_BUFFER_SIZE;
 	++index;
 	--UART_buffer_lines;
@@ -199,7 +200,7 @@ void NMEA_init(UART_HandleTypeDef *huart, DMA_HandleTypeDef *DMA){
 	NMEA_huart=huart;
 	NMEA_DMA=DMA;
 	__HAL_UART_ENABLE_IT(NMEA_huart,UART_IT_IDLE);
-	HAL_UART_Receive_DMA(NMEA_huart, NMEA__UART_DMA_buffer, NMEA_UART_DMA_BUFFER_SIZE);
+	HAL_UART_Receive_DMA(NMEA_huart, NMEA_UART_DMA_buffer, NMEA_UART_DMA_BUFFER_SIZE);
 
 
 	speed_change_CB_fun_ptr = &default_CB;
@@ -211,20 +212,20 @@ void NMEA_init(UART_HandleTypeDef *huart, DMA_HandleTypeDef *DMA){
  * add char to circular buffer
  */
 static NMEA_status NMEA_UART_DMA_get_char(uint8_t DMA_char){
-	uint8_t position = (UART_buffer_head + 1)%NMEA_UART_BUFFER_SIZE;
+	int position = (UART_buffer_head + 1)%NMEA_UART_BUFFER_SIZE;
 	NMEA_status stat=NMEA_OK;
 
 	if (position == UART_buffer_tail){		//buffer overflowed! make space for new message
-		while (NMEA__UART_buffer[UART_buffer_tail]!='\n'){
-			NMEA__UART_buffer[UART_buffer_tail]=0;
+		while (NMEA_UART_buffer[UART_buffer_tail]!='\n' && NMEA_UART_buffer[UART_buffer_tail]!=0){
+			NMEA_UART_buffer[UART_buffer_tail]=0;
 			UART_buffer_tail=(UART_buffer_tail + 1)%NMEA_UART_BUFFER_SIZE;
 		}
-		NMEA__UART_buffer[UART_buffer_tail]=0;
+		NMEA_UART_buffer[UART_buffer_tail]=0;
 		UART_buffer_tail=(UART_buffer_tail + 1)%NMEA_UART_BUFFER_SIZE;
 		stat=NMEA_BUFFER_OVERFLOWED;
 	}
 
-	NMEA__UART_buffer[UART_buffer_head]=DMA_char;
+	NMEA_UART_buffer[UART_buffer_head]=DMA_char;
 
 	UART_buffer_head=position;
 
@@ -239,18 +240,20 @@ static NMEA_status NMEA_UART_DMA_get_char(uint8_t DMA_char){
  * this function copies messages from DMA buffer to UART circular buffer
  */
 NMEA_status NMEA_UART_DMA_copy_buffer(void){
-	uint8_t data_length = NMEA_UART_DMA_BUFFER_SIZE - __HAL_DMA_GET_COUNTER(NMEA_DMA);
+
 
 	NMEA_status stat=NMEA_OK;
 
+	int data_length = NMEA_UART_DMA_BUFFER_SIZE - __HAL_DMA_GET_COUNTER(NMEA_DMA);
+
 	for (int i = 0; i < data_length; i++){
-		if (NMEA_UART_DMA_get_char(NMEA__UART_DMA_buffer[i])==NMEA_BUFFER_OVERFLOWED){
+		if (NMEA_UART_DMA_get_char(NMEA_UART_DMA_buffer[i])==NMEA_BUFFER_OVERFLOWED){
 			stat=NMEA_BUFFER_OVERFLOWED;
 		}
-		NMEA__UART_DMA_buffer[i]=0;
+		NMEA_UART_DMA_buffer[i]=0;
 	}
 
-	HAL_UART_Receive_DMA(NMEA_huart, NMEA__UART_DMA_buffer, NMEA_UART_DMA_BUFFER_SIZE);
+	HAL_UART_Receive_DMA(NMEA_huart, NMEA_UART_DMA_buffer, NMEA_UART_DMA_BUFFER_SIZE);
 	return stat;
 }
 
@@ -262,8 +265,8 @@ NMEA_status NMEA_process_task(void){
 	NMEA_status stat = NMEA_OK;
 	while(UART_buffer_lines>0) {
 		NMEA_read_line();
-		if (NMEA_checksum_clc(NMEA__working_buffer) == NMEA_OK){
-			NMEA_parser((char *)NMEA__working_buffer);
+		if (NMEA_checksum_clc(NMEA_working_buffer) == NMEA_OK){
+			NMEA_parser((char *)NMEA_working_buffer);
 		}else stat = NMEA_CHECKSUM_ERROR;
 	}
 	return stat;

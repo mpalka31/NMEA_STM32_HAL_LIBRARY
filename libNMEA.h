@@ -82,6 +82,10 @@ typedef struct{
 
 }NMEA_data;
 /*
+ * NMEA_data instantion declaration.
+ */
+NMEA_data nmea_data;
+/*
  * May be?
  */
 typedef enum {
@@ -91,24 +95,17 @@ typedef enum {
 }NMEA_CB_ID;
 
 /*
- * NMEA_data instantion declaration.
- */
-NMEA_data nmea_data;
-/*
  * NMEA_init is a function to initialize library.
  */
 void NMEA_init(UART_HandleTypeDef *huart,DMA_HandleTypeDef	*DMA);
-/*
- * NMEA_get_UART_char is a function that receives one data byte from UART.
- * You have to place it in UART interrupt routine.
- */
-//NMEA_status NMEA_UART_get_char(void);
+
 NMEA_status NMEA_UART_DMA_copy_buffer(void);
 NMEA_status NMEA_process_task(void);
 NMEA_status NMEA_CB_register(void (*CB_fun)(void),NMEA_CB_ID CB_id,float barier);
 NMEA_status NMEA_CB_unregister(NMEA_CB_ID CB_id);
 
 NMEA_status user_UART_IDLE_IT_handler(void);
+
 
 
 
