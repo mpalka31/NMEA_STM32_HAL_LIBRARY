@@ -157,10 +157,9 @@ static uint8_t hx2int(uint8_t n2, uint8_t n1){
 static NMEA_status NMEA_checksum_clc(uint8_t * message){
 	uint8_t index = 1;
 	uint8_t checksum_clc =0;
-	int iter = 0;
-	while (message[index]!='*' && iter<200){
+
+	while (message[index]!='*' && index<NMEA_WORKING_BUFFER_SIZE-2){
 		checksum_clc^=message[index++];
-		iter ++;
 	}
 
 	uint8_t checksum = hx2int(message[index+1],message[index+2]);
@@ -180,14 +179,14 @@ static void NMEA_read_line(void){
 	while (index < NMEA_WORKING_BUFFER_SIZE) NMEA__working_buffer[index++]=0;	// Clean up working buffer.
 
 	index = 0;
-	while(NMEA__UART_buffer[UART_buffer_tail]!='\n'){
+	while(NMEA__UART_buffer[UART_buffer_tail]!= '\n' && index < NMEA_WORKING_BUFFER_SIZE-2){
 		NMEA__working_buffer[index]=NMEA__UART_buffer[UART_buffer_tail];
 		NMEA__UART_buffer[UART_buffer_tail] = 0;
-		++UART_buffer_tail;
+		UART_buffer_tail = (UART_buffer_tail + 1)%NMEA_UART_BUFFER_SIZE;
 		++index;
 	}
 	NMEA__working_buffer[index]=NMEA__UART_buffer[UART_buffer_tail];
-	++UART_buffer_tail;
+	UART_buffer_tail = (UART_buffer_tail + 1)%NMEA_UART_BUFFER_SIZE;
 	++index;
 	--UART_buffer_lines;
 
@@ -202,7 +201,6 @@ void NMEA_init(UART_HandleTypeDef *huart, DMA_HandleTypeDef *DMA){
 	__HAL_UART_ENABLE_IT(NMEA_huart,UART_IT_IDLE);
 	HAL_UART_Receive_DMA(NMEA_huart, NMEA__UART_DMA_buffer, NMEA_UART_DMA_BUFFER_SIZE);
 
-	//HAL_UART_Receive_IT(NMEA_huart, &UART_char_tmp, 1);
 
 	speed_change_CB_fun_ptr = &default_CB;
 	speed_raise_barrier_CB_fun_ptr = &default_CB;
@@ -238,7 +236,7 @@ static NMEA_status NMEA_UART_DMA_get_char(uint8_t DMA_char){
 }
 
 /*
- * this function copies messages from DMA buffer to ...
+ * this function copies messages from DMA buffer to UART circular buffer
  */
 NMEA_status NMEA_UART_DMA_copy_buffer(void){
 	uint8_t data_length = NMEA_UART_DMA_BUFFER_SIZE - __HAL_DMA_GET_COUNTER(NMEA_DMA);
@@ -264,17 +262,16 @@ NMEA_status NMEA_process_task(void){
 	NMEA_status stat = NMEA_OK;
 	while(UART_buffer_lines>0) {
 		NMEA_read_line();
-		stat = NMEA_checksum_clc(NMEA__working_buffer);
-		if (stat == NMEA_OK){
+		if (NMEA_checksum_clc(NMEA__working_buffer) == NMEA_OK){
 			NMEA_parser((char *)NMEA__working_buffer);
-		}
+		}else stat = NMEA_CHECKSUM_ERROR;
 	}
 	return stat;
 }
 
 /*
  * user_IDLE_IT_handler is a function that detects UART idle IT and handle it.
- * It should be used in void "UARTX_IRQHandler(void)" from "stm32lXxx_it.c" file like this:
+ * It should be used in void "UARTX_IRQHandler(void)" from "stm32XXxx_it.c" file like this:
  *
  * 	void UART4_IRQHandler(void)
  * 	{
@@ -296,8 +293,6 @@ NMEA_status user_UART_IDLE_IT_handler(void){
 	}
 	return stat;
 }
-
-
 
 
 
