@@ -1,0 +1,257 @@
+\hypertarget{libNMEA_8h}{}\doxysection{lib\+NMEA.\+h File Reference}
+\label{libNMEA_8h}\index{libNMEA.h@{libNMEA.h}}
+{\ttfamily \#include \char`\"{}stm32l4xx\+\_\+hal.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structNMEA__data}{NMEA\+\_\+data}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{libNMEA_8h_a38bf33565b5a888ce217e2280a0a3021}{NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+\+BUFFER\+\_\+\+SIZE}}~512
+\item 
+\#define \mbox{\hyperlink{libNMEA_8h_a1e248974fd75251622120bf7a02e3151}{NMEA\+\_\+\+UART\+\_\+\+BUFFER\+\_\+\+SIZE}}~1024
+\item 
+\#define \mbox{\hyperlink{libNMEA_8h_a4f080a1a1460027aec613b1e33334529}{NMEA\+\_\+\+WORKING\+\_\+\+BUFFER\+\_\+\+SIZE}}~128
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} \{ \newline
+\mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6ca271fd6e6d43f2e4ae68b0efdb6851e38}{NMEA\+\_\+\+OK}} =0
+, \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6ca6c7cb621af84febab9c28895b881c0a0}{NMEA\+\_\+\+BUFFER\+\_\+\+OVERFLOWED}}
+, \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6cac2605308bed3c5366d380a0387536331}{NMEA\+\_\+\+CHECKSUM\+\_\+\+ERROR}}
+, \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6caa198a2bb859684b08d586b87e9f38d98}{NMEA\+\_\+\+WRONG\+\_\+\+DATA}}
+, \newline
+\mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6caf52d9819bb63d8f9a3f5a1f1c5d9e9ac}{NMEA\+\_\+\+WRONG\+\_\+\+CB\+\_\+\+ID}}
+, \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6ca58c7c4496b8a08ac8640b0f9d4957590}{NMEA\+\_\+\+ERROR}}
+ \}
+\item 
+enum \mbox{\hyperlink{libNMEA_8h_aba360722aa56c64655875ce19329c8e5}{NMEA\+\_\+\+CB\+\_\+\+ID}} \{ \mbox{\hyperlink{libNMEA_8h_aba360722aa56c64655875ce19329c8e5a4ae57e5556ed891d30b49b165a3c8a26}{SPEED\+\_\+\+CHANGE\+\_\+\+CB}} =0
+, \mbox{\hyperlink{libNMEA_8h_aba360722aa56c64655875ce19329c8e5aba942bc4d6105e23d361d7d22a8a7448}{SPEED\+\_\+\+RISE\+\_\+\+BARRIER\+\_\+\+CB}}
+, \mbox{\hyperlink{libNMEA_8h_aba360722aa56c64655875ce19329c8e5a09afeb11277e66620efa70c38bff060d}{SPEED\+\_\+\+FALL\+\_\+\+BARRIER\+\_\+\+CB}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{libNMEA_8h_a4512ff2b1b47cf5b15b0c80610a59096}{NMEA\+\_\+init}} (UART\+\_\+\+Handle\+Type\+Def $\ast$huart, DMA\+\_\+\+Handle\+Type\+Def $\ast$DMA)
+\item 
+\mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} \mbox{\hyperlink{libNMEA_8h_a9b7b2388b96b1ced9178ffec4a9f618e}{NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+copy\+\_\+buffer}} (void)
+\item 
+\mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} \mbox{\hyperlink{libNMEA_8h_a3de145f81ae94d22ed27c673b9e8b08d}{NMEA\+\_\+process\+\_\+task}} (void)
+\item 
+\mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} \mbox{\hyperlink{libNMEA_8h_abb6a6e4e734a2f6bd082cca0b7fa6fa6}{NMEA\+\_\+\+CB\+\_\+register}} (void($\ast$CB\+\_\+fun)(void), \mbox{\hyperlink{libNMEA_8h_aba360722aa56c64655875ce19329c8e5}{NMEA\+\_\+\+CB\+\_\+\+ID}} CB\+\_\+id, float barier)
+\item 
+\mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} \mbox{\hyperlink{libNMEA_8h_a785e1219791a665ce5501e0dcf57fdde}{NMEA\+\_\+\+CB\+\_\+unregister}} (\mbox{\hyperlink{libNMEA_8h_aba360722aa56c64655875ce19329c8e5}{NMEA\+\_\+\+CB\+\_\+\+ID}} CB\+\_\+id)
+\item 
+\mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} \mbox{\hyperlink{libNMEA_8h_a12e9ebb3cb9f8b25b7e10666fb3c49d4}{user\+\_\+\+UART\+\_\+\+IDLE\+\_\+\+IT\+\_\+handler}} (void)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+UART\+\_\+\+Handle\+Type\+Def $\ast$ \mbox{\hyperlink{libNMEA_8h_a34df1b251166e54964314395114b3219}{NMEA\+\_\+huart}}
+\item 
+DMA\+\_\+\+Handle\+Type\+Def $\ast$ \mbox{\hyperlink{libNMEA_8h_a31cbf35134216ae70c72042b5ef79409}{NMEA\+\_\+\+DMA}}
+\item 
+\mbox{\hyperlink{structNMEA__data}{NMEA\+\_\+data}} \mbox{\hyperlink{libNMEA_8h_a385a22547d1d9ec0c2cb0066b185c4b4}{nmea\+\_\+data}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Created on\+: Nov 23, 2020 Author\+: Michał Pałka
+
+This is the header file of the library created to handling communication with GPS devices by NMEA protocol. It is created for STM32 MCUs family. It should be included in \char`\"{}main.\+h\char`\"{} file 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{libNMEA_8h_a1e248974fd75251622120bf7a02e3151}\label{libNMEA_8h_a1e248974fd75251622120bf7a02e3151}} 
+\index{libNMEA.h@{libNMEA.h}!NMEA\_UART\_BUFFER\_SIZE@{NMEA\_UART\_BUFFER\_SIZE}}
+\index{NMEA\_UART\_BUFFER\_SIZE@{NMEA\_UART\_BUFFER\_SIZE}!libNMEA.h@{libNMEA.h}}
+\doxysubsubsection{\texorpdfstring{NMEA\_UART\_BUFFER\_SIZE}{NMEA\_UART\_BUFFER\_SIZE}}
+{\footnotesize\ttfamily \#define NMEA\+\_\+\+UART\+\_\+\+BUFFER\+\_\+\+SIZE~1024}
+
+Circular buffer size definition \mbox{\Hypertarget{libNMEA_8h_a38bf33565b5a888ce217e2280a0a3021}\label{libNMEA_8h_a38bf33565b5a888ce217e2280a0a3021}} 
+\index{libNMEA.h@{libNMEA.h}!NMEA\_UART\_DMA\_BUFFER\_SIZE@{NMEA\_UART\_DMA\_BUFFER\_SIZE}}
+\index{NMEA\_UART\_DMA\_BUFFER\_SIZE@{NMEA\_UART\_DMA\_BUFFER\_SIZE}!libNMEA.h@{libNMEA.h}}
+\doxysubsubsection{\texorpdfstring{NMEA\_UART\_DMA\_BUFFER\_SIZE}{NMEA\_UART\_DMA\_BUFFER\_SIZE}}
+{\footnotesize\ttfamily \#define NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+\+BUFFER\+\_\+\+SIZE~512}
+
+UART DMA buffer size definition \mbox{\Hypertarget{libNMEA_8h_a4f080a1a1460027aec613b1e33334529}\label{libNMEA_8h_a4f080a1a1460027aec613b1e33334529}} 
+\index{libNMEA.h@{libNMEA.h}!NMEA\_WORKING\_BUFFER\_SIZE@{NMEA\_WORKING\_BUFFER\_SIZE}}
+\index{NMEA\_WORKING\_BUFFER\_SIZE@{NMEA\_WORKING\_BUFFER\_SIZE}!libNMEA.h@{libNMEA.h}}
+\doxysubsubsection{\texorpdfstring{NMEA\_WORKING\_BUFFER\_SIZE}{NMEA\_WORKING\_BUFFER\_SIZE}}
+{\footnotesize\ttfamily \#define NMEA\+\_\+\+WORKING\+\_\+\+BUFFER\+\_\+\+SIZE~128}
+
+Working buffer size definition 
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{libNMEA_8h_aba360722aa56c64655875ce19329c8e5}\label{libNMEA_8h_aba360722aa56c64655875ce19329c8e5}} 
+\index{libNMEA.h@{libNMEA.h}!NMEA\_CB\_ID@{NMEA\_CB\_ID}}
+\index{NMEA\_CB\_ID@{NMEA\_CB\_ID}!libNMEA.h@{libNMEA.h}}
+\doxysubsubsection{\texorpdfstring{NMEA\_CB\_ID}{NMEA\_CB\_ID}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{libNMEA_8h_aba360722aa56c64655875ce19329c8e5}{NMEA\+\_\+\+CB\+\_\+\+ID}}}
+
+NMEA\+\_\+\+CB\+\_\+\+ID\textquotesingle{}s are id\textquotesingle{}s using during event cb registration. \begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SPEED\_CHANGE\_CB@{SPEED\_CHANGE\_CB}!libNMEA.h@{libNMEA.h}}\index{libNMEA.h@{libNMEA.h}!SPEED\_CHANGE\_CB@{SPEED\_CHANGE\_CB}}}\mbox{\Hypertarget{libNMEA_8h_aba360722aa56c64655875ce19329c8e5a4ae57e5556ed891d30b49b165a3c8a26}\label{libNMEA_8h_aba360722aa56c64655875ce19329c8e5a4ae57e5556ed891d30b49b165a3c8a26}} 
+SPEED\+\_\+\+CHANGE\+\_\+\+CB&Id of callback to change of speed event. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SPEED\_RISE\_BARRIER\_CB@{SPEED\_RISE\_BARRIER\_CB}!libNMEA.h@{libNMEA.h}}\index{libNMEA.h@{libNMEA.h}!SPEED\_RISE\_BARRIER\_CB@{SPEED\_RISE\_BARRIER\_CB}}}\mbox{\Hypertarget{libNMEA_8h_aba360722aa56c64655875ce19329c8e5aba942bc4d6105e23d361d7d22a8a7448}\label{libNMEA_8h_aba360722aa56c64655875ce19329c8e5aba942bc4d6105e23d361d7d22a8a7448}} 
+SPEED\+\_\+\+RISE\+\_\+\+BARRIER\+\_\+\+CB&Id of callback to ctross the rise speed bariere event. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SPEED\_FALL\_BARRIER\_CB@{SPEED\_FALL\_BARRIER\_CB}!libNMEA.h@{libNMEA.h}}\index{libNMEA.h@{libNMEA.h}!SPEED\_FALL\_BARRIER\_CB@{SPEED\_FALL\_BARRIER\_CB}}}\mbox{\Hypertarget{libNMEA_8h_aba360722aa56c64655875ce19329c8e5a09afeb11277e66620efa70c38bff060d}\label{libNMEA_8h_aba360722aa56c64655875ce19329c8e5a09afeb11277e66620efa70c38bff060d}} 
+SPEED\+\_\+\+FALL\+\_\+\+BARRIER\+\_\+\+CB&Id of callback to ctross the fall speed bariere event. \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}\label{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}} 
+\index{libNMEA.h@{libNMEA.h}!NMEA\_status@{NMEA\_status}}
+\index{NMEA\_status@{NMEA\_status}!libNMEA.h@{libNMEA.h}}
+\doxysubsubsection{\texorpdfstring{NMEA\_status}{NMEA\_status}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}}}
+
+Definition of ERROR codes (NMEA\+\_\+status). \begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NMEA\_OK@{NMEA\_OK}!libNMEA.h@{libNMEA.h}}\index{libNMEA.h@{libNMEA.h}!NMEA\_OK@{NMEA\_OK}}}\mbox{\Hypertarget{libNMEA_8h_a6455e1040e29859f724cdef604f09a6ca271fd6e6d43f2e4ae68b0efdb6851e38}\label{libNMEA_8h_a6455e1040e29859f724cdef604f09a6ca271fd6e6d43f2e4ae68b0efdb6851e38}} 
+NMEA\+\_\+\+OK&operation success \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NMEA\_BUFFER\_OVERFLOWED@{NMEA\_BUFFER\_OVERFLOWED}!libNMEA.h@{libNMEA.h}}\index{libNMEA.h@{libNMEA.h}!NMEA\_BUFFER\_OVERFLOWED@{NMEA\_BUFFER\_OVERFLOWED}}}\mbox{\Hypertarget{libNMEA_8h_a6455e1040e29859f724cdef604f09a6ca6c7cb621af84febab9c28895b881c0a0}\label{libNMEA_8h_a6455e1040e29859f724cdef604f09a6ca6c7cb621af84febab9c28895b881c0a0}} 
+NMEA\+\_\+\+BUFFER\+\_\+\+OVERFLOWED&circular buffer overflowed \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NMEA\_CHECKSUM\_ERROR@{NMEA\_CHECKSUM\_ERROR}!libNMEA.h@{libNMEA.h}}\index{libNMEA.h@{libNMEA.h}!NMEA\_CHECKSUM\_ERROR@{NMEA\_CHECKSUM\_ERROR}}}\mbox{\Hypertarget{libNMEA_8h_a6455e1040e29859f724cdef604f09a6cac2605308bed3c5366d380a0387536331}\label{libNMEA_8h_a6455e1040e29859f724cdef604f09a6cac2605308bed3c5366d380a0387536331}} 
+NMEA\+\_\+\+CHECKSUM\+\_\+\+ERROR&invalid data received \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NMEA\_WRONG\_DATA@{NMEA\_WRONG\_DATA}!libNMEA.h@{libNMEA.h}}\index{libNMEA.h@{libNMEA.h}!NMEA\_WRONG\_DATA@{NMEA\_WRONG\_DATA}}}\mbox{\Hypertarget{libNMEA_8h_a6455e1040e29859f724cdef604f09a6caa198a2bb859684b08d586b87e9f38d98}\label{libNMEA_8h_a6455e1040e29859f724cdef604f09a6caa198a2bb859684b08d586b87e9f38d98}} 
+NMEA\+\_\+\+WRONG\+\_\+\+DATA&wrong data passed by user (of the library) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NMEA\_WRONG\_CB\_ID@{NMEA\_WRONG\_CB\_ID}!libNMEA.h@{libNMEA.h}}\index{libNMEA.h@{libNMEA.h}!NMEA\_WRONG\_CB\_ID@{NMEA\_WRONG\_CB\_ID}}}\mbox{\Hypertarget{libNMEA_8h_a6455e1040e29859f724cdef604f09a6caf52d9819bb63d8f9a3f5a1f1c5d9e9ac}\label{libNMEA_8h_a6455e1040e29859f724cdef604f09a6caf52d9819bb63d8f9a3f5a1f1c5d9e9ac}} 
+NMEA\+\_\+\+WRONG\+\_\+\+CB\+\_\+\+ID&invalid CB ID \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NMEA\_ERROR@{NMEA\_ERROR}!libNMEA.h@{libNMEA.h}}\index{libNMEA.h@{libNMEA.h}!NMEA\_ERROR@{NMEA\_ERROR}}}\mbox{\Hypertarget{libNMEA_8h_a6455e1040e29859f724cdef604f09a6ca58c7c4496b8a08ac8640b0f9d4957590}\label{libNMEA_8h_a6455e1040e29859f724cdef604f09a6ca58c7c4496b8a08ac8640b0f9d4957590}} 
+NMEA\+\_\+\+ERROR&something went wrong \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{libNMEA_8h_abb6a6e4e734a2f6bd082cca0b7fa6fa6}\label{libNMEA_8h_abb6a6e4e734a2f6bd082cca0b7fa6fa6}} 
+\index{libNMEA.h@{libNMEA.h}!NMEA\_CB\_register@{NMEA\_CB\_register}}
+\index{NMEA\_CB\_register@{NMEA\_CB\_register}!libNMEA.h@{libNMEA.h}}
+\doxysubsubsection{\texorpdfstring{NMEA\_CB\_register()}{NMEA\_CB\_register()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} NMEA\+\_\+\+CB\+\_\+register (\begin{DoxyParamCaption}\item[{void($\ast$)(void)}]{CB\+\_\+fun,  }\item[{\mbox{\hyperlink{libNMEA_8h_aba360722aa56c64655875ce19329c8e5}{NMEA\+\_\+\+CB\+\_\+\+ID}}}]{CB\+\_\+id,  }\item[{float}]{barier }\end{DoxyParamCaption})}
+
+NMEA\+\_\+\+CB\+\_\+register is a function using to register callback functions.~\newline
+Thanks to it you can customize program behaviour for incomming events and realize measurements, monitoring parameters etc. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em CB\+\_\+fun} & is a pointer to callback function which will be triggered after specified event. \\
+\hline
+\mbox{\texttt{ in}}  & {\em CB\+\_\+id} & is a NMEA\+\_\+\+CB\+\_\+\+ID which specify event. \\
+\hline
+\mbox{\texttt{ in}}  & {\em barier} & is a float value determining if the cb should be triggered or not (speed barier, delta of speed etc). \\
+\hline
+\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more informations check out NMEA\+\_\+status documentation. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{libNMEA_8h_a785e1219791a665ce5501e0dcf57fdde}\label{libNMEA_8h_a785e1219791a665ce5501e0dcf57fdde}} 
+\index{libNMEA.h@{libNMEA.h}!NMEA\_CB\_unregister@{NMEA\_CB\_unregister}}
+\index{NMEA\_CB\_unregister@{NMEA\_CB\_unregister}!libNMEA.h@{libNMEA.h}}
+\doxysubsubsection{\texorpdfstring{NMEA\_CB\_unregister()}{NMEA\_CB\_unregister()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} NMEA\+\_\+\+CB\+\_\+unregister (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{libNMEA_8h_aba360722aa56c64655875ce19329c8e5}{NMEA\+\_\+\+CB\+\_\+\+ID}}}]{CB\+\_\+id }\end{DoxyParamCaption})}
+
+NMEA\+\_\+\+CB\+\_\+unregister is a function using to unregister specified callback function.~\newline
+Thanks to it you delete setted callback. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em CB\+\_\+id} & is a NMEA\+\_\+\+CB\+\_\+\+ID which specify event. \\
+\hline
+\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more informations check out NMEA\+\_\+status documentation. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{libNMEA_8h_a4512ff2b1b47cf5b15b0c80610a59096}\label{libNMEA_8h_a4512ff2b1b47cf5b15b0c80610a59096}} 
+\index{libNMEA.h@{libNMEA.h}!NMEA\_init@{NMEA\_init}}
+\index{NMEA\_init@{NMEA\_init}!libNMEA.h@{libNMEA.h}}
+\doxysubsubsection{\texorpdfstring{NMEA\_init()}{NMEA\_init()}}
+{\footnotesize\ttfamily void NMEA\+\_\+init (\begin{DoxyParamCaption}\item[{UART\+\_\+\+Handle\+Type\+Def $\ast$}]{huart,  }\item[{DMA\+\_\+\+Handle\+Type\+Def $\ast$}]{DMA }\end{DoxyParamCaption})}
+
+NMEA\+\_\+init is a function to initialize library.~\newline
+You should place it before while() loop. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em huart} & is a pointer to UART\+\_\+\+Handle\+Type\+Def using ro comunicate with GPS module. \\
+\hline
+\mbox{\texttt{ in}}  & {\em DMA} & is a pointer to DMA\+\_\+\+Handle\+Type\+Def using to receive data from module. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{libNMEA_8h_a3de145f81ae94d22ed27c673b9e8b08d}\label{libNMEA_8h_a3de145f81ae94d22ed27c673b9e8b08d}} 
+\index{libNMEA.h@{libNMEA.h}!NMEA\_process\_task@{NMEA\_process\_task}}
+\index{NMEA\_process\_task@{NMEA\_process\_task}!libNMEA.h@{libNMEA.h}}
+\doxysubsubsection{\texorpdfstring{NMEA\_process\_task()}{NMEA\_process\_task()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} NMEA\+\_\+process\+\_\+task (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+NMEA\+\_\+process\+\_\+task is a function that handle the processing data from module.~\newline
+You should place it inside while() loop. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more informations check out NMEA\+\_\+status documentation. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{libNMEA_8h_a9b7b2388b96b1ced9178ffec4a9f618e}\label{libNMEA_8h_a9b7b2388b96b1ced9178ffec4a9f618e}} 
+\index{libNMEA.h@{libNMEA.h}!NMEA\_UART\_DMA\_copy\_buffer@{NMEA\_UART\_DMA\_copy\_buffer}}
+\index{NMEA\_UART\_DMA\_copy\_buffer@{NMEA\_UART\_DMA\_copy\_buffer}!libNMEA.h@{libNMEA.h}}
+\doxysubsubsection{\texorpdfstring{NMEA\_UART\_DMA\_copy\_buffer()}{NMEA\_UART\_DMA\_copy\_buffer()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+copy\+\_\+buffer (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+copy\+\_\+buffer is a function which copies messages from DMA buffer to UART circular buffer.~\newline
+To do so, it uses NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+get\+\_\+char function for every character in NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+buffer from 0 to (NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+\+BUFFER\+\_\+\+SIZE -\/ \+\_\+\+\_\+\+HAL\+\_\+\+DMA\+\_\+\+GET\+\_\+\+COUNTER(\+NMEA\+\_\+\+DMA)). 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more informations check out NMEA\+\_\+status documentation. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{libNMEA_8h_a12e9ebb3cb9f8b25b7e10666fb3c49d4}\label{libNMEA_8h_a12e9ebb3cb9f8b25b7e10666fb3c49d4}} 
+\index{libNMEA.h@{libNMEA.h}!user\_UART\_IDLE\_IT\_handler@{user\_UART\_IDLE\_IT\_handler}}
+\index{user\_UART\_IDLE\_IT\_handler@{user\_UART\_IDLE\_IT\_handler}!libNMEA.h@{libNMEA.h}}
+\doxysubsubsection{\texorpdfstring{user\_UART\_IDLE\_IT\_handler()}{user\_UART\_IDLE\_IT\_handler()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} user\+\_\+\+UART\+\_\+\+IDLE\+\_\+\+IT\+\_\+handler (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+user\+\_\+\+IDLE\+\_\+\+IT\+\_\+handler is a function that detects UART idle IT and handle it.~\newline
+ It should be used in void \char`\"{}\+UARTX\+\_\+\+IRQHandler(void)\char`\"{} from \char`\"{}stm32\+XXxx\+\_\+it.\+c\char`\"{} file like this\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void} UART4\_IRQHandler(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    \textcolor{comment}{//USER CODE BEGIN UART4\_IRQn 0}}
+\DoxyCodeLine{    }
+\DoxyCodeLine{    \mbox{\hyperlink{libNMEA_8c_a12e9ebb3cb9f8b25b7e10666fb3c49d4}{user\_UART\_IDLE\_IT\_handler}}();}
+\DoxyCodeLine{    }
+\DoxyCodeLine{    \textcolor{comment}{//USER CODE END UART4\_IRQn 0}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    ...}
+
+\end{DoxyCode}
+ 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{libNMEA_8h_a385a22547d1d9ec0c2cb0066b185c4b4}\label{libNMEA_8h_a385a22547d1d9ec0c2cb0066b185c4b4}} 
+\index{libNMEA.h@{libNMEA.h}!nmea\_data@{nmea\_data}}
+\index{nmea\_data@{nmea\_data}!libNMEA.h@{libNMEA.h}}
+\doxysubsubsection{\texorpdfstring{nmea\_data}{nmea\_data}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structNMEA__data}{NMEA\+\_\+data}} nmea\+\_\+data}
+
+\mbox{\hyperlink{structNMEA__data}{NMEA\+\_\+data}} instantion declaration. \mbox{\Hypertarget{libNMEA_8h_a31cbf35134216ae70c72042b5ef79409}\label{libNMEA_8h_a31cbf35134216ae70c72042b5ef79409}} 
+\index{libNMEA.h@{libNMEA.h}!NMEA\_DMA@{NMEA\_DMA}}
+\index{NMEA\_DMA@{NMEA\_DMA}!libNMEA.h@{libNMEA.h}}
+\doxysubsubsection{\texorpdfstring{NMEA\_DMA}{NMEA\_DMA}}
+{\footnotesize\ttfamily DMA\+\_\+\+Handle\+Type\+Def$\ast$ NMEA\+\_\+\+DMA}
+
+Pointer to DMA handler structure using to receive messages from GPS module. \mbox{\Hypertarget{libNMEA_8h_a34df1b251166e54964314395114b3219}\label{libNMEA_8h_a34df1b251166e54964314395114b3219}} 
+\index{libNMEA.h@{libNMEA.h}!NMEA\_huart@{NMEA\_huart}}
+\index{NMEA\_huart@{NMEA\_huart}!libNMEA.h@{libNMEA.h}}
+\doxysubsubsection{\texorpdfstring{NMEA\_huart}{NMEA\_huart}}
+{\footnotesize\ttfamily UART\+\_\+\+Handle\+Type\+Def$\ast$ NMEA\+\_\+huart}
+
+Pointer to UART handler structure using to communication with GPS module. 
