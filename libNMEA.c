@@ -1,15 +1,17 @@
 /**
  * @file libNMEA.c
+ * @author	Michał Pałka
  *
  *  Created on: Nov 23, 2020
- *      Author: Michał Pałka
+ *
+ *  Implementation of NMEA library.
  */
 
 
 #include "libNMEA.h"
 /**
  * NMEA_UART_DMA_buffer is buffer to which incoming UART data are copied by DMA.\n
- * Size of this buffer have to be bigger then length of all incoming data from module in one shot.
+ * Size of this buffer has to be bigger then length of all incoming data from module in one shot.
  */
 static uint8_t NMEA_UART_DMA_buffer[NMEA_UART_DMA_BUFFER_SIZE]={0};
 /**
@@ -19,7 +21,7 @@ static uint8_t NMEA_UART_DMA_buffer[NMEA_UART_DMA_BUFFER_SIZE]={0};
 static uint8_t NMEA_UART_buffer[NMEA_UART_BUFFER_SIZE]={0};
 /**
  * NMEA_working_buffer is buffer to which data from circular buffer are copied to be parse.\n
- * Size of this buffer have to be bigger than longest NMEA message.
+ * Size of this buffer has to be bigger than longest NMEA message.
  */
 static uint8_t NMEA_working_buffer[NMEA_WORKING_BUFFER_SIZE]={0};
 static int UART_buffer_head=0;		/**< Index of circular buffer head*/
@@ -29,17 +31,17 @@ static int UART_buffer_lines=0;	/**< Number of lines in circular buffer to read.
  * speed_change_CB_fun_ptr is a pointer to function that will be triggered after delta of speed defined in speed_change_tolerance.
  */
 static void (*speed_change_CB_fun_ptr)(void);
-static float  speed_change_tolerance;	/**< Tolerance of speed change. If delta of speed is higher thenspeed_change_tolerance, speed_change_CB_fun_ptr() will be triggered.*/
+static float  speed_change_tolerance;	/**< Tolerance of speed change. If delta of speed is higher than speed_change_tolerance, speed_change_CB_fun_ptr() will be triggered.*/
 /**
  * speed_raise_barrier_CB_fun_ptr is a pointer to function that will be triggered when speed will cross up speed_raise_barrier.
  */
 static void (*speed_raise_barrier_CB_fun_ptr)(void);
-static float speed_raise_barrier;	/**< Bariere of increasing speed*/
+static float speed_raise_barrier;	/**< Barrier of increasing speed*/
 /**
  * speed_fall_barrier_CB_fun_ptr is a pointer to function that will be triggered when speed will cross down speed_fall_barrier.
  */
 static void (*speed_fall_barrier_CB_fun_ptr)(void);
-static float speed_fall_barrier;	/**< Bariere of decreasing speed*/
+static float speed_fall_barrier;	/**< Barrier of decreasing speed*/
 /**
  * default_CB() is a default function for all the CB pointers which do nothing.\n
  * The unregistering CB pointer is setting to pointer of this function.  
@@ -89,9 +91,9 @@ NMEA_status NMEA_CB_unregister(NMEA_CB_ID CB_id){
 	return NMEA_ERROR;
 }
 /**
- * NMEA_parser is funtion which parse single corect NMEA message.\n
- * Inside this function all known types of NMEA message ate recognized and nmea_data structuer fieals are setting.\n
- * There is also implemented mechanizm of recognising specified events and calling corresponding to them callbacks.
+ * NMEA_parser is function which parses single correct NMEA message.\n
+ * Inside this function all known types of NMEA message are recognized and nmea_data structure fields are set.\n
+ * There is also implemented mechanism of recognizing specified events and calling corresponding to them callbacks.
  * @param[in]	message	pointer to buffer storing NMEA message.
  */
 static void 	NMEA_parser(char *message){
@@ -170,10 +172,10 @@ static void 	NMEA_parser(char *message){
 	}
 }
 /**
- * hx2int is function which converts hex number written using characters to coresponding integer.
+ * hx2int is function which converts hex number written using characters to corresponding integer.
  * @param[in]	n2		is older position ix hex code
  * @param[in]	n1		is younger position ix hex code
- * @param[out]	uint8_t	is integer coresponding to input hex
+ * @param[out]	uint8_t	is integer corresponding to input hex
  */
 static uint8_t hx2int(uint8_t n2, uint8_t n1){
 	if (n2 <= '9') n2-='0';
@@ -186,10 +188,10 @@ static uint8_t hx2int(uint8_t n2, uint8_t n1){
 
 }
 /**
- * NMEA_checksum_clc is function which calculate checksum of the message and compare it to checksum value given in NMEA message.\n
+ * NMEA_checksum_clc is function which calculates checksum of the message and compares it to checksum value given in NMEA message.\n
  * To convert given checksum it uses hx2int function.
  * @param[in]	message	pointer to buffer storing NMEA message.
- * @param[out]	NMEA_status 	is a status code. It should be NMEA_OK. For more informations check out NMEA_status documentation.
+ * @param[out]	NMEA_status 	is a status code. It should be NMEA_OK. For more information check out NMEA_status documentation.
  */
 static NMEA_status NMEA_checksum_clc(uint8_t * message){
 	uint8_t index = 1;
@@ -231,6 +233,7 @@ static void NMEA_read_line(void){
 }
 
 void NMEA_init(UART_HandleTypeDef *huart, DMA_HandleTypeDef *DMA){
+	HAL_Delay(10);
 	NMEA_huart=huart;
 	NMEA_DMA=DMA;
 	__HAL_UART_ENABLE_IT(NMEA_huart,UART_IT_IDLE);
@@ -243,11 +246,11 @@ void NMEA_init(UART_HandleTypeDef *huart, DMA_HandleTypeDef *DMA){
 }
 
 /**
- * NMEA_UART_DMA_get_char is a function which takes character from NMEA_UART_DMA_buffer and place it inside NMEA_UART_buffer circular buffer.\n
- * If buffer overflowed, the oldest NMEA message will be delete to mahe space for incoming messages.\n
+ * NMEA_UART_DMA_get_char is a function which takes character from NMEA_UART_DMA_buffer and places it inside NMEA_UART_buffer circular buffer.\n
+ * If buffer overflowes, the oldest NMEA message will be deleted to make space for incoming messages.\n
  * If new line character is detected ('\ n'), the line counter (UART_buffer_lines) increases.
  * @param[in]	DMA_char	character from DMA buffer
- * @param[out]	NMEA_status 	is a status code. It should be NMEA_OK. For more informations check out NMEA_status documentation.
+ * @param[out]	NMEA_status 	is a status code. It should be NMEA_OK. For more information check out NMEA_status documentation.
  */
 static NMEA_status NMEA_UART_DMA_get_char(uint8_t DMA_char){
 	int position = (UART_buffer_head + 1)%NMEA_UART_BUFFER_SIZE;
@@ -277,9 +280,9 @@ static NMEA_status NMEA_UART_DMA_get_char(uint8_t DMA_char){
 /**
  * NMEA_UART_DMA_copy_buffer is a function which copies messages from DMA buffer to UART circular buffer.\n
  * To do so, it uses NMEA_UART_DMA_get_char function for every character in NMEA_UART_DMA_buffer from 0 to (NMEA_UART_DMA_BUFFER_SIZE - __HAL_DMA_GET_COUNTER(NMEA_DMA)).
- * @param[out]	NMEA_status 	is a status code. It should be NMEA_OK. For more informations check out NMEA_status documentation.
+ * @param[out]	NMEA_status 	is a status code. It should be NMEA_OK. For more information check out NMEA_status documentation.
  */
-NMEA_status NMEA_UART_DMA_copy_buffer(void){
+static NMEA_status NMEA_UART_DMA_copy_buffer(void){
 
 
 	NMEA_status stat=NMEA_OK;

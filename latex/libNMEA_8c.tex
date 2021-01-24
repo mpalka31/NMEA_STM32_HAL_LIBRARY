@@ -22,7 +22,7 @@ void \mbox{\hyperlink{libNMEA_8c_a4512ff2b1b47cf5b15b0c80610a59096}{NMEA\+\_\+in
 \item 
 static \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} \mbox{\hyperlink{libNMEA_8c_a16860a31ab732a43b39cf76ca896c699}{NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+get\+\_\+char}} (uint8\+\_\+t DMA\+\_\+char)
 \item 
-\mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} \mbox{\hyperlink{libNMEA_8c_a9b7b2388b96b1ced9178ffec4a9f618e}{NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+copy\+\_\+buffer}} (void)
+static \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} \mbox{\hyperlink{libNMEA_8c_acbdb77647311a348e1fa7df3d832494b}{NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+copy\+\_\+buffer}} (void)
 \item 
 \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} \mbox{\hyperlink{libNMEA_8c_a3de145f81ae94d22ed27c673b9e8b08d}{NMEA\+\_\+process\+\_\+task}} (void)
 \item 
@@ -58,7 +58,12 @@ static float \mbox{\hyperlink{libNMEA_8c_ad952e5ce4ae694e70facb7ef3b21686f}{spee
 
 
 \doxysubsection{Detailed Description}
-Created on\+: Nov 23, 2020 Author\+: Michał Pałka 
+\begin{DoxyAuthor}{Author}
+Michał Pałka
+\end{DoxyAuthor}
+Created on\+: Nov 23, 2020
+
+Implementation of NMEA library. 
 
 \doxysubsection{Function Documentation}
 \mbox{\Hypertarget{libNMEA_8c_a6c0e6f7a43f00c36a4820f41114bd343}\label{libNMEA_8c_a6c0e6f7a43f00c36a4820f41114bd343}} 
@@ -75,13 +80,13 @@ The unregistering CB pointer is setting to pointer of this function. ~\newline
 \doxysubsubsection{\texorpdfstring{hx2int()}{hx2int()}}
 {\footnotesize\ttfamily static uint8\+\_\+t hx2int (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{n2,  }\item[{uint8\+\_\+t}]{n1 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
-hx2int is function which converts hex number written using characters to coresponding integer. 
+hx2int is function which converts hex number written using characters to corresponding integer. 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em n2} & is older position ix hex code \\
 \hline
 \mbox{\texttt{ in}}  & {\em n1} & is younger position ix hex code \\
 \hline
-\mbox{\texttt{ out}}  & {\em uint8\+\_\+t} & is integer coresponding to input hex \\
+\mbox{\texttt{ out}}  & {\em uint8\+\_\+t} & is integer corresponding to input hex \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{libNMEA_8c_aa18d042cac3e9b379af0aa90bff0cbb5}\label{libNMEA_8c_aa18d042cac3e9b379af0aa90bff0cbb5}} 
@@ -90,16 +95,16 @@ hx2int is function which converts hex number written using characters to corespo
 \doxysubsubsection{\texorpdfstring{NMEA\_CB\_register()}{NMEA\_CB\_register()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} NMEA\+\_\+\+CB\+\_\+register (\begin{DoxyParamCaption}\item[{void($\ast$)(void)}]{CB\+\_\+fun,  }\item[{\mbox{\hyperlink{libNMEA_8h_aba360722aa56c64655875ce19329c8e5}{NMEA\+\_\+\+CB\+\_\+\+ID}}}]{CB\+\_\+id,  }\item[{float}]{barier }\end{DoxyParamCaption})}
 
-NMEA\+\_\+\+CB\+\_\+register is a function using to register callback functions.~\newline
-Thanks to it you can customize program behaviour for incomming events and realize measurements, monitoring parameters etc. 
+NMEA\+\_\+\+CB\+\_\+register is a function used to register callback functions.~\newline
+Thanks to it you can customize program behavior for incoming events and realize measurements, monitoring parameters etc. 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em CB\+\_\+fun} & is a pointer to callback function which will be triggered after specified event. \\
 \hline
-\mbox{\texttt{ in}}  & {\em CB\+\_\+id} & is a NMEA\+\_\+\+CB\+\_\+\+ID which specify event. \\
+\mbox{\texttt{ in}}  & {\em CB\+\_\+id} & is a NMEA\+\_\+\+CB\+\_\+\+ID which specifies event. \\
 \hline
-\mbox{\texttt{ in}}  & {\em barier} & is a float value determining if the cb should be triggered or not (speed barier, delta of speed etc). \\
+\mbox{\texttt{ in}}  & {\em barrier} & is a float value determining if the cb should be triggered or not (speed barrier, delta of speed etc). \\
 \hline
-\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more informations check out NMEA\+\_\+status documentation. \\
+\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more information check out NMEA\+\_\+status documentation. \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{libNMEA_8c_a785e1219791a665ce5501e0dcf57fdde}\label{libNMEA_8c_a785e1219791a665ce5501e0dcf57fdde}} 
@@ -108,12 +113,12 @@ Thanks to it you can customize program behaviour for incomming events and realiz
 \doxysubsubsection{\texorpdfstring{NMEA\_CB\_unregister()}{NMEA\_CB\_unregister()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} NMEA\+\_\+\+CB\+\_\+unregister (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{libNMEA_8h_aba360722aa56c64655875ce19329c8e5}{NMEA\+\_\+\+CB\+\_\+\+ID}}}]{CB\+\_\+id }\end{DoxyParamCaption})}
 
-NMEA\+\_\+\+CB\+\_\+unregister is a function using to unregister specified callback function.~\newline
-Thanks to it you delete setted callback. 
+NMEA\+\_\+\+CB\+\_\+unregister is a function used to unregister specified callback function.~\newline
+Thanks to it you delete selected callback. 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em CB\+\_\+id} & is a NMEA\+\_\+\+CB\+\_\+\+ID which specify event. \\
+\mbox{\texttt{ in}}  & {\em CB\+\_\+id} & is a NMEA\+\_\+\+CB\+\_\+\+ID which specifies event. \\
 \hline
-\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more informations check out NMEA\+\_\+status documentation. \\
+\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more information check out NMEA\+\_\+status documentation. \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{libNMEA_8c_abcc743a236bdcd0fdc4c0b375bf986e0}\label{libNMEA_8c_abcc743a236bdcd0fdc4c0b375bf986e0}} 
@@ -122,12 +127,12 @@ Thanks to it you delete setted callback.
 \doxysubsubsection{\texorpdfstring{NMEA\_checksum\_clc()}{NMEA\_checksum\_clc()}}
 {\footnotesize\ttfamily static \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} NMEA\+\_\+checksum\+\_\+clc (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
-NMEA\+\_\+checksum\+\_\+clc is function which calculate checksum of the message and compare it to checksum value given in NMEA message.~\newline
+NMEA\+\_\+checksum\+\_\+clc is function which calculates checksum of the message and compares it to checksum value given in NMEA message.~\newline
 To convert given checksum it uses hx2int function. 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em message} & pointer to buffer storing NMEA message. \\
 \hline
-\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more informations check out NMEA\+\_\+status documentation. \\
+\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more information check out NMEA\+\_\+status documentation. \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{libNMEA_8c_a4512ff2b1b47cf5b15b0c80610a59096}\label{libNMEA_8c_a4512ff2b1b47cf5b15b0c80610a59096}} 
@@ -139,9 +144,9 @@ To convert given checksum it uses hx2int function.
 NMEA\+\_\+init is a function to initialize library.~\newline
 You should place it before while() loop. 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em huart} & is a pointer to UART\+\_\+\+Handle\+Type\+Def using ro comunicate with GPS module. \\
+\mbox{\texttt{ in}}  & {\em huart} & is a pointer to UART\+\_\+\+Handle\+Type\+Def used to comunicate with GPS module. \\
 \hline
-\mbox{\texttt{ in}}  & {\em DMA} & is a pointer to DMA\+\_\+\+Handle\+Type\+Def using to receive data from module. \\
+\mbox{\texttt{ in}}  & {\em DMA} & is a pointer to DMA\+\_\+\+Handle\+Type\+Def used to receive data from module. \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{libNMEA_8c_a54532974e3201ccd5624790285e6e9c6}\label{libNMEA_8c_a54532974e3201ccd5624790285e6e9c6}} 
@@ -150,9 +155,9 @@ You should place it before while() loop.
 \doxysubsubsection{\texorpdfstring{NMEA\_parser()}{NMEA\_parser()}}
 {\footnotesize\ttfamily static void NMEA\+\_\+parser (\begin{DoxyParamCaption}\item[{char $\ast$}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
-NMEA\+\_\+parser is funtion which parse single corect NMEA message.~\newline
-Inside this function all known types of NMEA message ate recognized and nmea\+\_\+data structuer fieals are setting.~\newline
-There is also implemented mechanizm of recognising specified events and calling corresponding to them callbacks. 
+NMEA\+\_\+parser is function which parses single correct NMEA message.~\newline
+Inside this function all known types of NMEA message are recognized and nmea\+\_\+data structure fields are set.~\newline
+There is also implemented mechanism of recognizing specified events and calling corresponding to them callbacks. 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em message} & pointer to buffer storing NMEA message. \\
 \hline
@@ -163,10 +168,10 @@ There is also implemented mechanizm of recognising specified events and calling 
 \doxysubsubsection{\texorpdfstring{NMEA\_process\_task()}{NMEA\_process\_task()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} NMEA\+\_\+process\+\_\+task (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
 
-NMEA\+\_\+process\+\_\+task is a function that handle the processing data from module.~\newline
+NMEA\+\_\+process\+\_\+task is a function that handles the processing data from module.~\newline
 You should place it inside while() loop. 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more informations check out NMEA\+\_\+status documentation. \\
+\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more information check out NMEA\+\_\+status documentation. \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{libNMEA_8c_a6aa2ebd70707c14b1940ec5378d5ca79}\label{libNMEA_8c_a6aa2ebd70707c14b1940ec5378d5ca79}} 
@@ -175,16 +180,16 @@ You should place it inside while() loop.
 \doxysubsubsection{\texorpdfstring{NMEA\_read\_line()}{NMEA\_read\_line()}}
 {\footnotesize\ttfamily static void NMEA\+\_\+read\+\_\+line (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
-NMEA\+\_\+read\+\_\+line is function which reads one NMEA message line from NMEA\+\_\+\+UART\+\_\+buffer circular buffer to NMEA\+\_\+working\+\_\+buffer. \mbox{\Hypertarget{libNMEA_8c_a9b7b2388b96b1ced9178ffec4a9f618e}\label{libNMEA_8c_a9b7b2388b96b1ced9178ffec4a9f618e}} 
+NMEA\+\_\+read\+\_\+line is function which reads one NMEA message line from NMEA\+\_\+\+UART\+\_\+buffer circular buffer to NMEA\+\_\+working\+\_\+buffer. \mbox{\Hypertarget{libNMEA_8c_acbdb77647311a348e1fa7df3d832494b}\label{libNMEA_8c_acbdb77647311a348e1fa7df3d832494b}} 
 \index{libNMEA.c@{libNMEA.c}!NMEA\_UART\_DMA\_copy\_buffer@{NMEA\_UART\_DMA\_copy\_buffer}}
 \index{NMEA\_UART\_DMA\_copy\_buffer@{NMEA\_UART\_DMA\_copy\_buffer}!libNMEA.c@{libNMEA.c}}
 \doxysubsubsection{\texorpdfstring{NMEA\_UART\_DMA\_copy\_buffer()}{NMEA\_UART\_DMA\_copy\_buffer()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+copy\+\_\+buffer (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily static \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+copy\+\_\+buffer (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
 NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+copy\+\_\+buffer is a function which copies messages from DMA buffer to UART circular buffer.~\newline
 To do so, it uses NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+get\+\_\+char function for every character in NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+buffer from 0 to (NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+\+BUFFER\+\_\+\+SIZE -\/ \+\_\+\+\_\+\+HAL\+\_\+\+DMA\+\_\+\+GET\+\_\+\+COUNTER(\+NMEA\+\_\+\+DMA)). 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more informations check out NMEA\+\_\+status documentation. \\
+\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more information check out NMEA\+\_\+status documentation. \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{libNMEA_8c_a16860a31ab732a43b39cf76ca896c699}\label{libNMEA_8c_a16860a31ab732a43b39cf76ca896c699}} 
@@ -193,13 +198,13 @@ To do so, it uses NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+get\+\_\+char function for ev
 \doxysubsubsection{\texorpdfstring{NMEA\_UART\_DMA\_get\_char()}{NMEA\_UART\_DMA\_get\_char()}}
 {\footnotesize\ttfamily static \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+get\+\_\+char (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{DMA\+\_\+char }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
-NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+get\+\_\+char is a function which takes character from NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+buffer and place it inside NMEA\+\_\+\+UART\+\_\+buffer circular buffer.~\newline
-If buffer overflowed, the oldest NMEA message will be delete to mahe space for incoming messages.~\newline
+NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+get\+\_\+char is a function which takes character from NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+buffer and places it inside NMEA\+\_\+\+UART\+\_\+buffer circular buffer.~\newline
+If buffer overflowes, the oldest NMEA message will be deleted to make space for incoming messages.~\newline
 If new line character is detected (\textquotesingle{}\textbackslash{} n\textquotesingle{}), the line counter (UART\+\_\+buffer\+\_\+lines) increases. 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em DMA\+\_\+char} & character from DMA buffer \\
 \hline
-\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more informations check out NMEA\+\_\+status documentation. \\
+\mbox{\texttt{ out}}  & {\em NMEA\+\_\+status} & is a status code. It should be NMEA\+\_\+\+OK. For more information check out NMEA\+\_\+status documentation. \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{libNMEA_8c_a12e9ebb3cb9f8b25b7e10666fb3c49d4}\label{libNMEA_8c_a12e9ebb3cb9f8b25b7e10666fb3c49d4}} 
@@ -208,7 +213,7 @@ If new line character is detected (\textquotesingle{}\textbackslash{} n\textquot
 \doxysubsubsection{\texorpdfstring{user\_UART\_IDLE\_IT\_handler()}{user\_UART\_IDLE\_IT\_handler()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{libNMEA_8h_a6455e1040e29859f724cdef604f09a6c}{NMEA\+\_\+status}} user\+\_\+\+UART\+\_\+\+IDLE\+\_\+\+IT\+\_\+handler (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
 
-user\+\_\+\+IDLE\+\_\+\+IT\+\_\+handler is a function that detects UART idle IT and handle it.~\newline
+user\+\_\+\+IDLE\+\_\+\+IT\+\_\+handler is a function that detects UART idle IT and handles it.~\newline
  It should be used in void \char`\"{}\+UARTX\+\_\+\+IRQHandler(void)\char`\"{} from \char`\"{}stm32\+XXxx\+\_\+it.\+c\char`\"{} file like this\+: 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\textcolor{keywordtype}{void} UART4\_IRQHandler(\textcolor{keywordtype}{void})}
@@ -239,14 +244,14 @@ Size of this buffer should be at least twice NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+\+
 {\footnotesize\ttfamily uint8\+\_\+t NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+buffer\mbox{[}\mbox{\hyperlink{libNMEA_8h_a38bf33565b5a888ce217e2280a0a3021}{NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+\+BUFFER\+\_\+\+SIZE}}\mbox{]} =\{0\}\hspace{0.3cm}{\ttfamily [static]}}
 
 NMEA\+\_\+\+UART\+\_\+\+DMA\+\_\+buffer is buffer to which incoming UART data are copied by DMA.~\newline
-Size of this buffer have to be bigger then length of all incoming data from module in one shot. \mbox{\Hypertarget{libNMEA_8c_a02c7c094de99101324ff0d53225af6ae}\label{libNMEA_8c_a02c7c094de99101324ff0d53225af6ae}} 
+Size of this buffer has to be bigger then length of all incoming data from module in one shot. \mbox{\Hypertarget{libNMEA_8c_a02c7c094de99101324ff0d53225af6ae}\label{libNMEA_8c_a02c7c094de99101324ff0d53225af6ae}} 
 \index{libNMEA.c@{libNMEA.c}!NMEA\_working\_buffer@{NMEA\_working\_buffer}}
 \index{NMEA\_working\_buffer@{NMEA\_working\_buffer}!libNMEA.c@{libNMEA.c}}
 \doxysubsubsection{\texorpdfstring{NMEA\_working\_buffer}{NMEA\_working\_buffer}}
 {\footnotesize\ttfamily uint8\+\_\+t NMEA\+\_\+working\+\_\+buffer\mbox{[}\mbox{\hyperlink{libNMEA_8h_a4f080a1a1460027aec613b1e33334529}{NMEA\+\_\+\+WORKING\+\_\+\+BUFFER\+\_\+\+SIZE}}\mbox{]} =\{0\}\hspace{0.3cm}{\ttfamily [static]}}
 
 NMEA\+\_\+working\+\_\+buffer is buffer to which data from circular buffer are copied to be parse.~\newline
-Size of this buffer have to be bigger than longest NMEA message. \mbox{\Hypertarget{libNMEA_8c_a9e31d5dd8590dbcd5ce6c557f9e13d77}\label{libNMEA_8c_a9e31d5dd8590dbcd5ce6c557f9e13d77}} 
+Size of this buffer has to be bigger than longest NMEA message. \mbox{\Hypertarget{libNMEA_8c_a9e31d5dd8590dbcd5ce6c557f9e13d77}\label{libNMEA_8c_a9e31d5dd8590dbcd5ce6c557f9e13d77}} 
 \index{libNMEA.c@{libNMEA.c}!speed\_change\_CB\_fun\_ptr@{speed\_change\_CB\_fun\_ptr}}
 \index{speed\_change\_CB\_fun\_ptr@{speed\_change\_CB\_fun\_ptr}!libNMEA.c@{libNMEA.c}}
 \doxysubsubsection{\texorpdfstring{speed\_change\_CB\_fun\_ptr}{speed\_change\_CB\_fun\_ptr}}
@@ -258,13 +263,13 @@ speed\+\_\+change\+\_\+\+CB\+\_\+fun\+\_\+ptr is a pointer to function that will
 \doxysubsubsection{\texorpdfstring{speed\_change\_tolerance}{speed\_change\_tolerance}}
 {\footnotesize\ttfamily float speed\+\_\+change\+\_\+tolerance\hspace{0.3cm}{\ttfamily [static]}}
 
-Tolerance of speed change. If delta of speed is higher thenspeed\+\_\+change\+\_\+tolerance, \mbox{\hyperlink{libNMEA_8c_a9e31d5dd8590dbcd5ce6c557f9e13d77}{speed\+\_\+change\+\_\+\+CB\+\_\+fun\+\_\+ptr()}} will be triggered. \mbox{\Hypertarget{libNMEA_8c_ad952e5ce4ae694e70facb7ef3b21686f}\label{libNMEA_8c_ad952e5ce4ae694e70facb7ef3b21686f}} 
+Tolerance of speed change. If delta of speed is higher than speed\+\_\+change\+\_\+tolerance, \mbox{\hyperlink{libNMEA_8c_a9e31d5dd8590dbcd5ce6c557f9e13d77}{speed\+\_\+change\+\_\+\+CB\+\_\+fun\+\_\+ptr()}} will be triggered. \mbox{\Hypertarget{libNMEA_8c_ad952e5ce4ae694e70facb7ef3b21686f}\label{libNMEA_8c_ad952e5ce4ae694e70facb7ef3b21686f}} 
 \index{libNMEA.c@{libNMEA.c}!speed\_fall\_barrier@{speed\_fall\_barrier}}
 \index{speed\_fall\_barrier@{speed\_fall\_barrier}!libNMEA.c@{libNMEA.c}}
 \doxysubsubsection{\texorpdfstring{speed\_fall\_barrier}{speed\_fall\_barrier}}
 {\footnotesize\ttfamily float speed\+\_\+fall\+\_\+barrier\hspace{0.3cm}{\ttfamily [static]}}
 
-Bariere of decreasing speed \mbox{\Hypertarget{libNMEA_8c_ad6c3270340a06f9f2c57291313c85263}\label{libNMEA_8c_ad6c3270340a06f9f2c57291313c85263}} 
+Barrier of decreasing speed \mbox{\Hypertarget{libNMEA_8c_ad6c3270340a06f9f2c57291313c85263}\label{libNMEA_8c_ad6c3270340a06f9f2c57291313c85263}} 
 \index{libNMEA.c@{libNMEA.c}!speed\_fall\_barrier\_CB\_fun\_ptr@{speed\_fall\_barrier\_CB\_fun\_ptr}}
 \index{speed\_fall\_barrier\_CB\_fun\_ptr@{speed\_fall\_barrier\_CB\_fun\_ptr}!libNMEA.c@{libNMEA.c}}
 \doxysubsubsection{\texorpdfstring{speed\_fall\_barrier\_CB\_fun\_ptr}{speed\_fall\_barrier\_CB\_fun\_ptr}}
@@ -276,7 +281,7 @@ speed\+\_\+fall\+\_\+barrier\+\_\+\+CB\+\_\+fun\+\_\+ptr is a pointer to functio
 \doxysubsubsection{\texorpdfstring{speed\_raise\_barrier}{speed\_raise\_barrier}}
 {\footnotesize\ttfamily float speed\+\_\+raise\+\_\+barrier\hspace{0.3cm}{\ttfamily [static]}}
 
-Bariere of increasing speed \mbox{\Hypertarget{libNMEA_8c_aa24b0a2e8b5498b6a1bc4aa32f423320}\label{libNMEA_8c_aa24b0a2e8b5498b6a1bc4aa32f423320}} 
+Barrier of increasing speed \mbox{\Hypertarget{libNMEA_8c_aa24b0a2e8b5498b6a1bc4aa32f423320}\label{libNMEA_8c_aa24b0a2e8b5498b6a1bc4aa32f423320}} 
 \index{libNMEA.c@{libNMEA.c}!speed\_raise\_barrier\_CB\_fun\_ptr@{speed\_raise\_barrier\_CB\_fun\_ptr}}
 \index{speed\_raise\_barrier\_CB\_fun\_ptr@{speed\_raise\_barrier\_CB\_fun\_ptr}!libNMEA.c@{libNMEA.c}}
 \doxysubsubsection{\texorpdfstring{speed\_raise\_barrier\_CB\_fun\_ptr}{speed\_raise\_barrier\_CB\_fun\_ptr}}

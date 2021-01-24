@@ -47,14 +47,48 @@ I have implemented a system of callback functions for some events. Using it you 
 - upward speed limit violation
 - downward speed limit violation
 
-For more informations see code documentation.
+For more information see code documentation.
+
+#### All data close at hand
+
+nmea_data is instance of NMEA_data structer. You have acces to it in your code to acces important and actual data whenever you need.
+```C
+typedef struct{
+	float		UTC_time; 
+	int			UT_date;
+	
+	float 		latitude;
+	char 		latitude_direction;
+	float 		longitude;
+	char 		longitude_direction;
+	float 		altitude;
+	float		geoidal_separation;
+	
+	float		speed_kmph;
+	float		speed_knots;
+	
+	uint8_t		sat_in_view;
+	uint8_t		sat_in_use;
+	
+	uint8_t		fix;
+	uint8_t		fix_mode;
+	
+	float		PDOP;
+	float		HDOP;
+	float		VDOP;
+
+}NMEA_data;
+
+NMEA_data nmea_data;
+```
+For more information see code documentation.
 
 ## Integrating library with your code
 
 In CubeMX follow these steps:
 - Select UART/USART port for your GPS module
 - Select async mode
-- Turn on global interrupt for RX port
+- Turn on global interrupt
 - Select DMA channel for UART/USART RX
 - Generate Code
 
@@ -109,5 +143,7 @@ Thats it! Now you are ready to use GPS features in your embedded system!
 
 Check out the example "main.c" to understand how to play with callback functions.
 
-I highly recommended to read the documentation when you clone the repository (e.g. "html/index.html") and read the source before integration with the system process. 
+I highly recommend to read the documentation when you clone the repository (e.g. "html/index.html") and read the source before integration with the system process. 
+
+For more complex example check out [this project](https://github.com/mpalka31/NMEA_test)
 

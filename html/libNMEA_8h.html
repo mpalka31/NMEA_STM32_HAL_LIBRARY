@@ -114,8 +114,6 @@ Enumerations</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a4512ff2b1b47cf5b15b0c80610a59096"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libNMEA_8h.html#a4512ff2b1b47cf5b15b0c80610a59096">NMEA_init</a> (UART_HandleTypeDef *huart, DMA_HandleTypeDef *DMA)</td></tr>
 <tr class="separator:a4512ff2b1b47cf5b15b0c80610a59096"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b7b2388b96b1ced9178ffec4a9f618e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="libNMEA_8h.html#a6455e1040e29859f724cdef604f09a6c">NMEA_status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libNMEA_8h.html#a9b7b2388b96b1ced9178ffec4a9f618e">NMEA_UART_DMA_copy_buffer</a> (void)</td></tr>
-<tr class="separator:a9b7b2388b96b1ced9178ffec4a9f618e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3de145f81ae94d22ed27c673b9e8b08d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="libNMEA_8h.html#a6455e1040e29859f724cdef604f09a6c">NMEA_status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libNMEA_8h.html#a3de145f81ae94d22ed27c673b9e8b08d">NMEA_process_task</a> (void)</td></tr>
 <tr class="separator:a3de145f81ae94d22ed27c673b9e8b08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb6a6e4e734a2f6bd082cca0b7fa6fa6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="libNMEA_8h.html#a6455e1040e29859f724cdef604f09a6c">NMEA_status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libNMEA_8h.html#abb6a6e4e734a2f6bd082cca0b7fa6fa6">NMEA_CB_register</a> (void(*CB_fun)(void), <a class="el" href="libNMEA_8h.html#aba360722aa56c64655875ce19329c8e5">NMEA_CB_ID</a> CB_id, float barier)</td></tr>
@@ -135,7 +133,8 @@ Variables</h2></td></tr>
 <tr class="separator:a385a22547d1d9ec0c2cb0066b185c4b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Created on: Nov 23, 2020 Author: Michał Pałka</p>
+<div class="textblock"><dl class="section author"><dt>Author</dt><dd>Michał Pałka</dd></dl>
+<p>Created on: Nov 23, 2020</p>
 <p>This is the header file of the library created to handling communication with GPS devices by NMEA protocol. It is created for STM32 MCUs family. It should be included in "main.h" file </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a1e248974fd75251622120bf7a02e3151"></a>
@@ -199,9 +198,9 @@ Variables</h2></td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aba360722aa56c64655875ce19329c8e5a4ae57e5556ed891d30b49b165a3c8a26"></a>SPEED_CHANGE_CB&#160;</td><td class="fielddoc"><p>Id of callback to change of speed event. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aba360722aa56c64655875ce19329c8e5aba942bc4d6105e23d361d7d22a8a7448"></a>SPEED_RISE_BARRIER_CB&#160;</td><td class="fielddoc"><p>Id of callback to ctross the rise speed bariere event. </p>
+<tr><td class="fieldname"><a id="aba360722aa56c64655875ce19329c8e5aba942bc4d6105e23d361d7d22a8a7448"></a>SPEED_RISE_BARRIER_CB&#160;</td><td class="fielddoc"><p>Id of callback to cross the rise speed barrier event. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aba360722aa56c64655875ce19329c8e5a09afeb11277e66620efa70c38bff060d"></a>SPEED_FALL_BARRIER_CB&#160;</td><td class="fielddoc"><p>Id of callback to ctross the fall speed bariere event. </p>
+<tr><td class="fieldname"><a id="aba360722aa56c64655875ce19329c8e5a09afeb11277e66620efa70c38bff060d"></a>SPEED_FALL_BARRIER_CB&#160;</td><td class="fielddoc"><p>Id of callback to cross the fall speed barrier event. </p>
 </td></tr>
 </table>
 
@@ -268,13 +267,13 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>NMEA_CB_register is a function using to register callback functions.<br  />
-Thanks to it you can customize program behaviour for incomming events and realize measurements, monitoring parameters etc. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>NMEA_CB_register is a function used to register callback functions.<br  />
+Thanks to it you can customize program behavior for incoming events and realize measurements, monitoring parameters etc. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">CB_fun</td><td>is a pointer to callback function which will be triggered after specified event. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">CB_id</td><td>is a NMEA_CB_ID which specify event. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">barier</td><td>is a float value determining if the cb should be triggered or not (speed barier, delta of speed etc). </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">NMEA_status</td><td>is a status code. It should be NMEA_OK. For more informations check out NMEA_status documentation. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">CB_id</td><td>is a NMEA_CB_ID which specifies event. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">barrier</td><td>is a float value determining if the cb should be triggered or not (speed barrier, delta of speed etc). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">NMEA_status</td><td>is a status code. It should be NMEA_OK. For more information check out NMEA_status documentation. </td></tr>
   </table>
   </dd>
 </dl>
@@ -296,11 +295,11 @@ Thanks to it you can customize program behaviour for incomming events and realiz
         </tr>
       </table>
 </div><div class="memdoc">
-<p>NMEA_CB_unregister is a function using to unregister specified callback function.<br  />
-Thanks to it you delete setted callback. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>NMEA_CB_unregister is a function used to unregister specified callback function.<br  />
+Thanks to it you delete selected callback. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">CB_id</td><td>is a NMEA_CB_ID which specify event. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">NMEA_status</td><td>is a status code. It should be NMEA_OK. For more informations check out NMEA_status documentation. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">CB_id</td><td>is a NMEA_CB_ID which specifies event. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">NMEA_status</td><td>is a status code. It should be NMEA_OK. For more information check out NMEA_status documentation. </td></tr>
   </table>
   </dd>
 </dl>
@@ -335,8 +334,8 @@ Thanks to it you delete setted callback. </p><dl class="params"><dt>Parameters</
 <p>NMEA_init is a function to initialize library.<br  />
 You should place it before while() loop. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">huart</td><td>is a pointer to UART_HandleTypeDef using ro comunicate with GPS module. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">DMA</td><td>is a pointer to DMA_HandleTypeDef using to receive data from module. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">huart</td><td>is a pointer to UART_HandleTypeDef used to comunicate with GPS module. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">DMA</td><td>is a pointer to DMA_HandleTypeDef used to receive data from module. </td></tr>
   </table>
   </dd>
 </dl>
@@ -358,35 +357,10 @@ You should place it before while() loop. </p><dl class="params"><dt>Parameters</
         </tr>
       </table>
 </div><div class="memdoc">
-<p>NMEA_process_task is a function that handle the processing data from module.<br  />
+<p>NMEA_process_task is a function that handles the processing data from module.<br  />
 You should place it inside while() loop. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">NMEA_status</td><td>is a status code. It should be NMEA_OK. For more informations check out NMEA_status documentation. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a9b7b2388b96b1ced9178ffec4a9f618e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b7b2388b96b1ced9178ffec4a9f618e">&#9670;&nbsp;</a></span>NMEA_UART_DMA_copy_buffer()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="libNMEA_8h.html#a6455e1040e29859f724cdef604f09a6c">NMEA_status</a> NMEA_UART_DMA_copy_buffer </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>NMEA_UART_DMA_copy_buffer is a function which copies messages from DMA buffer to UART circular buffer.<br  />
-To do so, it uses NMEA_UART_DMA_get_char function for every character in NMEA_UART_DMA_buffer from 0 to (NMEA_UART_DMA_BUFFER_SIZE - __HAL_DMA_GET_COUNTER(NMEA_DMA)). </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">NMEA_status</td><td>is a status code. It should be NMEA_OK. For more informations check out NMEA_status documentation. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">NMEA_status</td><td>is a status code. It should be NMEA_OK. For more information check out NMEA_status documentation. </td></tr>
   </table>
   </dd>
 </dl>
@@ -408,7 +382,7 @@ To do so, it uses NMEA_UART_DMA_get_char function for every character in NMEA_UA
         </tr>
       </table>
 </div><div class="memdoc">
-<p>user_IDLE_IT_handler is a function that detects UART idle IT and handle it.<br  />
+<p>user_IDLE_IT_handler is a function that detects UART idle IT and handles it.<br  />
  It should be used in void "UARTX_IRQHandler(void)" from "stm32XXxx_it.c" file like this: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> UART4_IRQHandler(<span class="keywordtype">void</span>)</div>
 <div class="line">{</div>
 <div class="line">    <span class="comment">//USER CODE BEGIN UART4_IRQn 0</span></div>
@@ -418,7 +392,7 @@ To do so, it uses NMEA_UART_DMA_get_char function for every character in NMEA_UA
 <div class="line">    <span class="comment">//USER CODE END UART4_IRQn 0</span></div>
 <div class="line"> </div>
 <div class="line">    ...</div>
-<div class="ttc" id="alibNMEA_8c_html_a12e9ebb3cb9f8b25b7e10666fb3c49d4"><div class="ttname"><a href="libNMEA_8c.html#a12e9ebb3cb9f8b25b7e10666fb3c49d4">user_UART_IDLE_IT_handler</a></div><div class="ttdeci">NMEA_status user_UART_IDLE_IT_handler(void)</div><div class="ttdef"><b>Definition:</b> libNMEA.c:311</div></div>
+<div class="ttc" id="alibNMEA_8c_html_a12e9ebb3cb9f8b25b7e10666fb3c49d4"><div class="ttname"><a href="libNMEA_8c.html#a12e9ebb3cb9f8b25b7e10666fb3c49d4">user_UART_IDLE_IT_handler</a></div><div class="ttdeci">NMEA_status user_UART_IDLE_IT_handler(void)</div><div class="ttdef"><b>Definition:</b> libNMEA.c:314</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -434,7 +408,7 @@ To do so, it uses NMEA_UART_DMA_get_char function for every character in NMEA_UA
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="structNMEA__data.html">NMEA_data</a> instantion declaration. </p>
+<p><a class="el" href="structNMEA__data.html">NMEA_data</a> instance declaration. </p>
 
 </div>
 </div>
