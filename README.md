@@ -143,7 +143,7 @@ Thats it! Now you are ready to use GPS features in your embedded system!
 
 Check out the example "main.c" to understand how to play with callback functions.
 
-I highly recommend to read the documentation when you clone the repository (e.g. "html/index.html") and read the source before integration with the system process. 
+I highly recommend to generate and read the documentation when you clone the repository using Doxygen and read the source before integration with the system process. 
 
 For more complex example check out [this project](https://github.com/mpalka31/NMEA_test)
 
